@@ -113,3 +113,102 @@ We would change the greeting property by writting HTML like so:
 ```
 
 **Note** It is best practice to use the same name as the property. In fact, in newer versions of Angular, you may get an error when trying to name your input differently to the property that it controls.
+
+## Component outputs
+
+When we want a component to inform a parent component that something has happened (a button click, a form has been submitted, etc) we can use the `@Output` directive.
+
+Let's update our `example` component's HTML so that we have a button our user can click to say hello back to the parent component.
+
+```html
+<p>{{ greeting }}</p>
+<p>Nice to meet you!</p>
+<button>Say hello</button>
+```
+
+Now that we have a button, we want to configure our component to emit an output whenever the user clicks the button. For now, we'll just console.log something to show that we're listening to the click event.
+
+In our `example.component.ts` file, let's add a method we can call when the button is clicked
+
+```ts
+import { Component, Input } from "@angular/core";
+
+@Component({
+  selector: "app-example", // defining the name of our component
+  templateUrl: "./example.component.html", // pointing the the component's html file
+  styleUrls: ["./example.component.css"], // pointing to the component's CSS file
+})
+export class ExampleComponent {
+  @Input("greeting") greeting = "Hello, world"; // a property containing a greeting we want to display in our component
+
+  sayHello() {
+    console.log("user says: hello!");
+  }
+}
+```
+
+The last thing we need to do to get the button calling this function, is to hook into the `click` event on the button. We want do this in our HTML like so:
+
+```html
+<button (click)="sayHello()">Say hello</button>
+```
+
+Now, when a user clicks the button, we should see `user says: hello!` in our browser console.
+
+The final part of getting our `example` component to inform the parent component that the user has clicked the button is to add an output to our component. We can do this by adding a new property to our component:
+
+```ts
+import { Component, Input, Output, EventEmitter } from "@angular/core";
+
+@Component({
+  selector: "app-example", // defining the name of our component
+  templateUrl: "./example.component.html", // pointing the the component's html file
+  styleUrls: ["./example.component.css"], // pointing to the component's CSS file
+})
+export class ExampleComponent {
+  @Input("greeting") greeting = "Hello, world"; // a property containing a greeting we want to display in our component
+  @Output("greetBack") greetBack = new EventEmitter<string>();
+
+  sayHello() {
+    console.log("user says: hello!");
+  }
+}
+```
+
+Let's break this down to look at the different parts of what we just added.
+
+```ts
+  @Output("greetBack") greetBack = new EventEmitter<string>()
+```
+
+First, we specify that the property we're adding to our component is going to be an output. The string we're passing into the `@Output` directive is the name of the property a parent component will use to reference the output. In this case, we're calling the property `greetBack`. Any parent component that uses our `example` component will listen to this output by writing the following HTML
+
+```html
+<app-example (greetBack)="doSomething($event)"></app-example>
+```
+
+Notice that the `greetBack` property is wrapped in `()`. This is Angular's way of saying "listen to events from this component". Any event that a component (or an in-built element such as a button) can emit has to be wrapped in `()`.
+
+In the above example, the parent component wants to call the `doSomething` function whenever the event is emitted. You'll also notice that the parent component is passing the `$event` variable into the function. The `$event` variable is a special variable that refers to whatever the event is emitting. In in-built components, such as a button, the `$event` variable is likely to refer to the event that has occured; for example, a [click event](https://www.w3schools.com/jsref/event_onclick.asp).
+
+When a parent component listens to our `greetBack` event, the `$event` variable will refer to whatever value we choose to emit. In our case, we created an `EventEmitter<string>` - this means the value of our event will be a `string`.
+
+Finally, we need to hook both of these parts together, by emitting an event when the user clicks the button. We can do this by changing our `sayHello` function to look emit our event.
+
+```ts
+import { Component, Input, Output, EventEmitter } from "@angular/core";
+
+@Component({
+  selector: "app-example", // defining the name of our component
+  templateUrl: "./example.component.html", // pointing the the component's html file
+  styleUrls: ["./example.component.css"], // pointing to the component's CSS file
+})
+export class ExampleComponent {
+  @Input("greeting") greeting = "Hello, world"; // a property containing a greeting we want to display in our component
+  @Output("greetBack") greetBack = new EventEmitter<string>();
+
+  sayHello() {
+    this.greetBack.emit("user says: hello!");
+  }
+}
+```
