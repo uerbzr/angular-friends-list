@@ -26,9 +26,9 @@ npm install -g @angular/cli
     - Take a look at the [Generating a new component section](#generating-a-new-component) for a refresher on how to do this
   - Using the files within the `template` folder, populate the html and css for your newly created component.
   - Add an input to your `people` component so that you can accept the name of the person you would like to display.
-    - Take a look at the [Component inputs section](./angular-recap.md#component-inputs) for a refresher on how to do this
+    - Take a look at the [Component inputs section](https://github.com/boolean-uk/angular-recap/blob/main/README.md#component-inputs) for a refresher on how to do this
   - Add an output to your `people` component so that when a user clicks the `Favourite` button, you set the favorite property in the `App` component to the person that was clicked
-    - Take a look at the [Component outputs section](./angular-recap.md#component-outputs)
+    - Take a look at the [Component outputs section](https://github.com/boolean-uk/angular-recap/blob/main/README.md#component-outputs)
 
 ## Running the app
 
