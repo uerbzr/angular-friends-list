@@ -1,4 +1,6 @@
-# AngularFriendsList
+# Angular Friends List
+
+![Angular friends list](./images/angular-friends-list.gif)
 
 ## Learning objectives
 
