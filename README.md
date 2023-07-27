@@ -48,6 +48,11 @@ Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The appli
 
 Run `ng generate component component-name` to generate a new component.
 
+## Extensions
+
+- Add the ability to have multiple favorite friends
+- Add a remove button to remove a friend as a favorite
+
 ## Help
 
 Take a look at the [Angular recap](https://github.com/boolean-uk/angular-recap/blob/main/README.md) for examples on how we can:
